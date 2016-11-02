@@ -17,7 +17,7 @@ def find_in_path(name, path):
 
 def locate_cuda():
     """Locate the CUDA environment on the system
-    Returns a dict with keys 'home', 'nvcc', 'include', and 'lib'
+    Returns a dict with keys 'home', 'nvcc', 'include', and 'lib64'
     and values giving the absolute path to each directory.
     Starts by looking for the CUDAHOME env variable. If not found, everything
     is based on finding 'nvcc' in the PATH.
@@ -37,7 +37,7 @@ def locate_cuda():
 
     cudaconfig = {'home':home, 'nvcc':nvcc,
                   'include': pjoin(home, 'include'),
-                  'lib': pjoin(home, 'lib')}
+                  'lib64': pjoin(home, 'lib64')}
     for k, v in cudaconfig.iteritems():
         if not os.path.exists(v):
             raise EnvironmentError('The CUDA %s path could not be located in %s' % (k, v))
@@ -50,8 +50,8 @@ ext = Extension('sort',
                 sources=['sort.pyx', 'thrust.cu'],
                 libraries=['cudart'],
                 language='c++',
-                library_dirs=[CUDA['lib']],
-                runtime_library_dirs=[CUDA['lib']],
+                library_dirs=[CUDA['lib64']],
+                runtime_library_dirs=[CUDA['lib64']],
                 extra_compile_args={
                     'gcc': [],
                     'nvcc': ['-arch=sm_20',
